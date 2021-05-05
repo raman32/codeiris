@@ -8,5 +8,5 @@ export interface UserProps {
   googleToken?: string;
   githubToken?: string;
   role: 'admin' | 'moderator' | 'user';
-  image: string;
+  image?: string;
 }

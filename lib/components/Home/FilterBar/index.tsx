@@ -8,15 +8,19 @@ import {
 } from 'lib/components/Icons';
 import LinkButton from 'lib/components/Shared/LinkButton';
 import React from 'react';
+import { PostOrder } from 'src/models/input/post-order.input';
 import FilterDropdown from './FilterDropdown';
 
-export type FilterProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->;
+export interface FilterProps
+  extends React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  > {
+  handleSort: ({ field, direction }) => void;
+}
 const getIconComponent = (Icon) => <Icon color="white" size={4} />;
 
-function FilterBar({ className, handleSort }) {
+function FilterBar({ className, handleSort }: FilterProps) {
   return (
     <div className={clsx('flex items-center', className)}>
       <div className="bg-white rounded-lg shadow-lg flex flex-1 p-4">
@@ -24,8 +28,7 @@ function FilterBar({ className, handleSort }) {
           color="success"
           Icon={getIconComponent(StarIcon)}
           handleSort={handleSort}
-        >
-          {[
+          options={[
             {
               name: 'Most Popular',
               order: {
@@ -41,15 +44,14 @@ function FilterBar({ className, handleSort }) {
               },
             },
           ]}
-        </FilterDropdown>
-
+        />
+        yar
         <FilterDropdown
           color="info"
           Icon={getIconComponent(TreadingUpIcon)}
           className="mx-5"
           handleSort={handleSort}
-        >
-          {[
+          options={[
             {
               name: 'Most Votes',
               order: {
@@ -65,14 +67,12 @@ function FilterBar({ className, handleSort }) {
               },
             },
           ]}
-        </FilterDropdown>
-
+        />
         <FilterDropdown
           color="warning"
           Icon={getIconComponent(ClockIcon)}
           handleSort={handleSort}
-        >
-          {[
+          options={[
             {
               name: 'New Post',
               order: {
@@ -88,7 +88,7 @@ function FilterBar({ className, handleSort }) {
               },
             },
           ]}
-        </FilterDropdown>
+        ></FilterDropdown>
       </div>
 
       <div>

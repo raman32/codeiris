@@ -6,7 +6,6 @@ import PostHeader from './PostHeader';
 import Votes from './Votes';
 import { useMutation } from '@apollo/client';
 import { observer } from 'mobx-react-lite';
-import useStore from '../../../store/StoreProvider';
 
 import {
   UpdateVoteDocument,
@@ -71,15 +70,7 @@ function Post({
         </Votes>
 
         <div className="ml-10 flex-1 ">
-          <PostHeader
-            user={{
-              image: !!user && !!user.image ? user.image : null,
-              name: !!user ? user.firstName + ' ' + user.lastName : 'Anonymous',
-              id: !!user ? user.id : null,
-            }}
-            className="mb-5"
-            updatedAt={createdAt}
-          />
+          <PostHeader user={user} className="mb-5" updatedAt={createdAt} />
           <div
             className="cursor-pointer"
             onClick={() => {
@@ -87,6 +78,7 @@ function Post({
             }}
           >
             <PostBody
+              id={id}
               title={title}
               tags={tags.map((ele) => ele.name)}
               postType={type}

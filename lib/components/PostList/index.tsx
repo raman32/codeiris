@@ -13,10 +13,11 @@ import FilterBar from 'lib/components/Home/FilterBar';
 import SectionTitle from '../Home/SectionTitle';
 import { DiscussionIcon } from '../Icons';
 import { PostOrder } from 'src/models/input/post-order.input';
+import { PostType } from '.prisma/client';
 
 export interface PostListProps {
   initialPosts?: PostProps[];
-  intialType?: string;
+  intialType?: PostType;
   className?: string;
 }
 const PostList: React.FC<PostListProps> = ({
@@ -24,25 +25,22 @@ const PostList: React.FC<PostListProps> = ({
   intialType = 'ask',
   className,
 }) => {
-  const router = useRouter();
-  const { postType } = router.query;
-  console.log(postType);
   const [posts, setPosts] = useState<PostProps[]>(initialPosts);
   const [cursor, setCursor] = useState('');
   const [hasNextPage, setHasNextPage] = useState(true);
   const [tags, setTags] = useState([]);
-  const [varaiables, setVariables] = useState({
+  const [variables, setVariables] = useState({
     after: cursor,
     first: 10,
     tags: tags.map((ele) => ele.name),
-    type: postType ? postType : intialType,
+    type: intialType,
     field: 'createdAt',
     direction: 'desc',
   });
   const { loading, data, error } = useQuery<GetPostsQuery, QueryGetPostsArgs>(
     GetPostsDocument,
     {
-      variables: varaiables,
+      variables: variables,
       skip: skipper(),
     },
   );
@@ -114,7 +112,7 @@ const PostList: React.FC<PostListProps> = ({
   }, [loading, data, error]);
   return (
     <div>
-      <FilterBar handleSort={handleSort} />
+      <FilterBar className="" handleSort={handleSort} />
 
       <SectionTitle
         className="my-10"
@@ -144,7 +142,7 @@ const PostList: React.FC<PostListProps> = ({
             />
           </div>
         ))}
-        {loading ? <Spinner size="large" /> : null}
+        {loading ? <Spinner className="align-middle" size="large" /> : null}
       </div>
     </div>
   );

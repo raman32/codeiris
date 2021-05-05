@@ -11,7 +11,7 @@ export interface PostProps {
   createdAt: string;
   upvoteState?: 'upvotes' | 'downvotes' | 'notvoted' | 'disabled';
   className?: string;
-  tags?: string[];
+  tags?: {id:string, name:string}[];
   image: {
     preview: string;
     source: string;
