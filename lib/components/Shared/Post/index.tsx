@@ -31,7 +31,7 @@ function Post({
   className,
   image,
   pageMode = false,
-}: PostProps) 
+}: PostProps) {
   const [upvotesLocal, setUpvotesLocal] = useState(upvotes);
   const [upvoteStateLocal, setUpvoteStateLocal] = useState(upvoteState);
   const [updateVote, { data, error, loading }] = useMutation<
