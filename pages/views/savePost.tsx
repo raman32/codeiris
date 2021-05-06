@@ -90,7 +90,7 @@ function SavePost() {
   };
 
   return (
-    <Container className="mt-10">
+    <Container className="mt-10 mb-10">
       <div className="flex w-full">
         {Object.values(PostType)
           .reverse()
@@ -110,11 +110,13 @@ function SavePost() {
         published instantly!
       </div>
 
-      <div className="flex items-start">
-        <Animation loop={true} data={getAnimation(activeTab)}></Animation>
+      <div className="lg:flex items-start">
+        <div className="sm:hidden lg:block">
+          <Animation loop={true} data={getAnimation(activeTab)} />
+        </div>
 
         <div
-          className="flex-grow p-5 bg-white mr-5 rounded-md shadow-lg"
+          className="flex-grow p-5 bg-white rounded-md shadow-lg"
           style={{ minHeight: '400px' }}
         >
           {getForm(activeTab, addPostData.loading, handleOnError, handleOnSave)}

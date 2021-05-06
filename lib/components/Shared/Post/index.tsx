@@ -8,6 +8,7 @@ import { useMutation } from '@apollo/client';
 import { observer } from 'mobx-react-lite';
 
 import {
+  PostType,
   UpdateVoteDocument,
   UpdateVoteMutation,
   UpdateVoteMutationVariables,
@@ -15,6 +16,10 @@ import {
 import image from 'next/image';
 import Router from 'next/router';
 import clsx from 'clsx';
+
+export interface PostPropsMain extends PostProps {
+  updatedAt?: any;
+}
 
 function Post({
   title,
@@ -30,7 +35,7 @@ function Post({
   className,
   image,
   pageMode = false,
-}: PostProps) {
+}: PostPropsMain) {
   const [upvotesLocal, setUpvotesLocal] = useState(upvotes);
   const [upvoteStateLocal, setUpvoteStateLocal] = useState(upvoteState);
   const [updateVote, { data, error, loading }] = useMutation<
@@ -81,7 +86,7 @@ function Post({
               id={id}
               title={title}
               tags={tags.map((ele) => ele.name)}
-              postType={type}
+              postType={type as PostType}
               showFullBody={pageMode}
             >
               {body}

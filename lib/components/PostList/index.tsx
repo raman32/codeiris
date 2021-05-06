@@ -1,13 +1,20 @@
 import { useQuery } from '@apollo/client';
 import clsx from 'clsx';
-import { GetPostsDocument, GetPostsQuery, QueryGetPostsArgs } from 'gql';
+import {
+  GetPostsDocument,
+  GetPostsQuery,
+  GetPostsQueryVariables,
+  OrderDirection,
+  PostOrderFeild,
+  PostType,
+} from 'gql';
 import { skipper } from 'lib/accessToken';
 import { PostProps } from 'lib/common/props/PostProps';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Spinner from '../atomic/spinner';
-import Filter from '../Filter';
+import TagsInput from '../Shared/TagsInput';
 import Post from '../Shared/Post';
 import FilterBar from 'lib/components/Home/FilterBar';
 import SectionTitle from '../Home/SectionTitle';
@@ -25,7 +32,9 @@ const PostList: React.FC<PostListProps> = ({
   intialType = 'ask',
   className,
 }) => {
-  const [posts, setPosts] = useState<PostProps[]>(initialPosts);
+  const router = useRouter();
+  const { postType } = router.query;
+  const [posts, setPosts] = useState<any[]>(initialPosts);
   const [cursor, setCursor] = useState('');
   const [hasNextPage, setHasNextPage] = useState(true);
   const [tags, setTags] = useState([]);
@@ -37,13 +46,20 @@ const PostList: React.FC<PostListProps> = ({
     field: 'createdAt',
     direction: 'desc',
   });
-  const { loading, data, error } = useQuery<GetPostsQuery, QueryGetPostsArgs>(
-    GetPostsDocument,
-    {
-      variables: variables,
-      skip: skipper(),
+  const { loading, data, error } = useQuery<
+    GetPostsQuery,
+    GetPostsQueryVariables
+  >(GetPostsDocument, {
+    variables: {
+      after: cursor,
+      first: varaiables.first,
+      tags: tags.map((ele) => ele.name),
+      type: postType ? (postType as PostType) : (intialType as PostType),
+      field: 'createdAt' as PostOrderFeild,
+      direction: 'desc' as OrderDirection,
     },
-  );
+    skip: skipper(),
+  });
   const handleTagFilter = () => {
     setPosts([]);
     setVariables((prev) => ({
@@ -64,9 +80,9 @@ const PostList: React.FC<PostListProps> = ({
   useEffect(() => {
     if (hasNextPage)
       window.addEventListener('scroll', function () {
-        var scrollHeight = document.documentElement.scrollHeight;
-        var scrollTop = document.documentElement.scrollTop;
-        var clientHeight = document.documentElement.clientHeight;
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
 
         if (scrollTop + clientHeight > scrollHeight - 20 && !loading) {
           console.log('Adding to page');
@@ -112,7 +128,13 @@ const PostList: React.FC<PostListProps> = ({
   }, [loading, data, error]);
   return (
     <div>
-      <FilterBar className="" handleSort={handleSort} />
+      <FilterBar
+        handleSort={handleSort}
+        onFilter={handleTagFilter}
+        tags={tags}
+        setTags={setTags}
+        className=""
+      />
 
       <SectionTitle
         className="my-10"
@@ -121,10 +143,10 @@ const PostList: React.FC<PostListProps> = ({
       >
         Threads & Discussions
       </SectionTitle>
-      <Filter onFilter={handleTagFilter} tags={tags} setTags={setTags}></Filter>
+
       <div className="container">
         {posts.map((ele) => (
-          <div className={clsx('mr-60', className)}>
+          <div className={clsx('lg:mr-60', className)}>
             <Post
               key={ele.id}
               id={ele.id}

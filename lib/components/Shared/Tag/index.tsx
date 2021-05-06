@@ -1,7 +1,13 @@
 import clsx from 'clsx';
 import React from 'react';
 
-function Tag({ children, color = 'text-gray-500', className = '' }) {
+function Tag({
+  children,
+  color = 'text-gray-500',
+  className = '',
+  closable = false,
+  onClose = null,
+}) {
   return (
     <div
       className={clsx(
@@ -9,8 +15,15 @@ function Tag({ children, color = 'text-gray-500', className = '' }) {
         color,
         className,
       )}
+      onClick={() => {}}
     >
       {children}
+
+      {closable && (
+        <span onClick={onClose} className="ml-2 cursor-pointer">
+          x
+        </span>
+      )}
     </div>
   );
 }
