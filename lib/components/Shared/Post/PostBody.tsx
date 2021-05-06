@@ -1,17 +1,27 @@
 import clsx from 'clsx';
+import { PostType } from 'gql';
 import React from 'react';
 import Tag from '../Tag';
 
 const MAX_VISIBLE_TAGS = 5;
+
+interface PostBodyPorps {
+  id?: string
+  title?: string
+  children?: React.ReactNode
+  tags?: any[]
+  postType?: PostType,
+  showFullBody?: boolean
+}
 
 function PostBody({
   id,
   title,
   children,
   tags = [],
-  postType = '',
+  postType,
   showFullBody = false,
-}) {
+}: PostBodyPorps) {
   return (
     <>
       <div className="text-2xl mb-3 font-semibold flex items-start">

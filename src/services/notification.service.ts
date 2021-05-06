@@ -1,10 +1,14 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { EventBus } from '../event-bus/event-bus';
+import { CreateCommentsEvents } from '../event-bus/events/comment-events';
 
 @Injectable()
 export class NotificationService implements OnModuleInit {
   constructor(private eventBus: EventBus) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onModuleInit(): any {}
+  onModuleInit(): any {
+    const commentCreateEvent$ = this.eventBus.ofType(CreateCommentsEvents);
+  }
+
+  async createCommentEmailNotification({ comment }) {}
 }

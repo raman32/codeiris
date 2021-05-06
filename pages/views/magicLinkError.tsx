@@ -2,38 +2,38 @@ import React from 'react';
 import Heading, { HeadingSize } from '../../lib/components/atomic/typography';
 import Button from '../../lib/components/atomic/button';
 import Router from 'next/router';
+import Animation from 'lib/components/Shared/Animation';
+
+import animationFailed from './../static/animations/failed.json';
 
 function MagicLinkError() {
   return (
-    <React.Fragment>
+    <>
       <div className="w-screen flex justify-center items-center h-screen bg-gray-100">
         <div
-          className="bg-white shadow rounded-2xl flex justify-center items-center"
+          className="bg-white shadow-lg rounded-2xl flex justify-center items-center"
           style={{ width: '70vw', height: '70vh' }}
         >
           <div className="flex flex-col justify-center items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-10 w-10 text-red-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+            <div className="text-2xl mb-3">Invalid Magic Link!</div>
+
+            <Animation
+              data={animationFailed}
+              height={150}
+              width={300}
+              loop={true}
+            />
+
+            <Button
+              className="bg-primary mt-3"
+              onClick={() => Router.push('/')}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <Heading size={HeadingSize.H600} className="text-error">
-              Invalid Link
-            </Heading>
-            <Button onClick={() => Router.push('/')}>Go to Home</Button>
+              Go Back to Home
+            </Button>
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 }
 

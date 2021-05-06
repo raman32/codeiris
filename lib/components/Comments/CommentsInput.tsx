@@ -68,6 +68,7 @@ function CommentsInput({ postId, parentId }: CommentProps) {
                   }),
                 );
             }}
+            className="mt-2"
           >
             Comment
           </Button>

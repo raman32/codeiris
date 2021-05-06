@@ -1,6 +1,3 @@
-import React from 'react';
-import { UserProps } from './UserProps';
-
 export interface PostProps {
   id?: string;
   title?: string;
@@ -8,11 +5,11 @@ export interface PostProps {
   upvotes?: number;
   user?: any;
   totalComments?: number;
-  createdAt: string;
+  createdAt?: string;
   upvoteState?: 'upvotes' | 'downvotes' | 'notvoted' | 'disabled';
   className?: string;
-  tags?: {id:string, name:string}[];
-  image: {
+  tags?: any[];
+  image?: {
     preview: string;
     source: string;
   };

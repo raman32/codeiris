@@ -1,7 +1,7 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-import Post from '../../lib/components/Post';
 import { PostProps } from '../../lib/common/props/PostProps';
+import Post from '../../lib/components/Shared/Post';
 
 export default {
   title: 'Post/Post',
