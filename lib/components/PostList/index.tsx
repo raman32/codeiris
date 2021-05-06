@@ -6,7 +6,7 @@ import {
   GetPostsQueryVariables,
   OrderDirection,
   PostOrderFeild,
-  PostType,
+  PostType as PostTypeGql,
 } from 'gql';
 import { skipper } from 'lib/accessToken';
 import { PostProps } from 'lib/common/props/PostProps';
@@ -38,26 +38,26 @@ const PostList: React.FC<PostListProps> = ({
   const [cursor, setCursor] = useState('');
   const [hasNextPage, setHasNextPage] = useState(true);
   const [tags, setTags] = useState([]);
-  const [variables, setVariables] = useState({
+  const [variables, setVariables] = useState<{
+    after: string;
+    first: number;
+    tags: any[];
+    type: PostTypeGql;
+    field: PostOrderFeild;
+    direction: OrderDirection;
+  }>({
     after: cursor,
     first: 10,
     tags: tags.map((ele) => ele.name),
-    type: intialType,
-    field: 'createdAt',
-    direction: 'desc',
+    type: postType ? (postType as PostTypeGql) : (intialType as PostTypeGql),
+    field: 'createdAt' as PostOrderFeild,
+    direction: 'desc' as OrderDirection,
   });
   const { loading, data, error } = useQuery<
     GetPostsQuery,
     GetPostsQueryVariables
   >(GetPostsDocument, {
-    variables: {
-      after: cursor,
-      first: varaiables.first,
-      tags: tags.map((ele) => ele.name),
-      type: postType ? (postType as PostType) : (intialType as PostType),
-      field: 'createdAt' as PostOrderFeild,
-      direction: 'desc' as OrderDirection,
-    },
+    variables: variables,
     skip: skipper(),
   });
   const handleTagFilter = () => {
@@ -68,13 +68,19 @@ const PostList: React.FC<PostListProps> = ({
       tags: tags.map((ele) => ele.name),
     }));
   };
-  const handleSort = ({ field, direction }: PostOrder) => {
+  const handleSort = ({
+    field,
+    direction,
+  }: {
+    field: PostOrderFeild;
+    direction: OrderDirection;
+  }) => {
     setPosts([]);
     setVariables((prev) => ({
       ...prev,
       after: '',
-      field: field,
-      direction: direction,
+      field: field as PostOrderFeild,
+      direction: direction as OrderDirection,
     }));
   };
   useEffect(() => {

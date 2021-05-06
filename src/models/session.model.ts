@@ -1,4 +1,4 @@
-import { ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseModel } from './base.model';
 import { User } from './user.model';
 import { DeepPartial } from '../common';
@@ -15,6 +15,7 @@ export class Session extends BaseModel {
   refreshToken: string;
   expires: Date;
   invalidate: boolean;
+  @Field(() => User)
   user: User;
   googleToken: string;
   githubToken: string;
